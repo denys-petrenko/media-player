@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video player</title>
+<style>
+    .player {
+        display: flex;
+        flex-direction: column;
+        width: 600px;
+        height: 400px;
+    }
+    .contrls {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+</style>
+</head>
+<body>
+    <div class="player">
+        <video poster="img/poster.png" controls>
+            <source src="video/vsvideo.mp4" type="video/mp4">
+            <source src="video/vsvideo.ogg" type="video/ogg">
+            <source src="video/vsvideo.webm" type="video/webm">
+        </video>
+        <div class="contrls">
+            <div>
+                <img id="playButton" src="img/icons8_play.png">
+            </div>
+            <div>
+                <img id="rewaindBack" src="img/icons8-prev.png">
+            </div>
+            <div>
+                <img id="rewaindForward" src="img/icons8-next.png">
+            </div>
+            <div>
+                <img id="stopButton" src="img/icons8-stop.png">
+            </div>
+
+            <div>
+                <img id="fullButton" src="img/icons8-full.png">
+            </div>
+            <button id="towards"></button>
+        <button id="backwards"></button>
+        </div>
+    </div>
+    <script>
+        let video = document.querySelector("video");
+        let towards = document.querySelector("#towards")
+        let backwards = document.querySelector("#backwards");
+        towards.onclick = function () {
+            video.playbackRate += 0.1;
+        }
+        backwards.onclick = function () {
+            video.playbackRate -= 0.1;
+        }
+
+       
+    </script>
+</body>
+</html>
