@@ -11,43 +11,46 @@
         width: 600px;
         height: 400px;
     }
-    .contrls {
+    .controls {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+    }
+    .button {
+        cursor: pointer;
     }
 </style>
 </head>
 <body>
     <div class="player">
-        <video poster="img/poster.png" controls>
+        <video poster="img/poster.png">
             <source src="video/vsvideo.mp4" type="video/mp4">
-            <source src="video/vsvideo.ogg" type="video/ogg">
-            <source src="video/vsvideo.webm" type="video/webm">
+            <!-- <source src="video/vsvideo.ogg" type="video/ogg">
+            <source src="video/vsvideo.webm" type="video/webm"> -->
         </video>
-        <div class="contrls">
+        <div class="controls">
             <div>
-                <img id="playButton" src="img/icons8_play.png">
+                <img class="button" id="playButton" src="img/icons8-play.png" alt="Play Button">
             </div>
             <div>
-                <img id="rewaindBack" src="img/icons8-prev.png">
+                <img class="button" id="rewaindBack" src="img/icons8-prev.png" alt="Back Button">
             </div>
             <div>
-                <img id="rewaindForward" src="img/icons8-next.png">
+                <img class="button" id="rewaindForward" src="img/icons8-next.png" alt="Forward Button">
             </div>
             <div>
-                <img id="stopButton" src="img/icons8-stop.png">
+                <img class="button" id="stopButton" src="img/icons8-stop.png" alt="Stop Button">
             </div>
-
             <div>
-                <img id="fullButton" src="img/icons8-full.png">
+                <img class="button" id="fullButton" src="img/icons8-full.png">
             </div>
-            <button id="towards"></button>
-        <button id="backwards"></button>
+            <button id="towards">Увеличить скорость воспроизведения</button>
+            <button id="backwards">Уменьшить скорость вопроизведения</button>
         </div>
     </div>
     <script>
         let video = document.querySelector("video");
+///////////////////////////////////////////////////////
         let towards = document.querySelector("#towards")
         let backwards = document.querySelector("#backwards");
         towards.onclick = function () {
@@ -56,8 +59,80 @@
         backwards.onclick = function () {
             video.playbackRate -= 0.1;
         }
+///////////////////////////////////////////////////////
+        let playButton = document.getElementById('playButton');
+        playButton.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+            playButton.src = 'img/icons8-pause.png';
+        } else {
+            video.pause();
+            playButton.src = 'img/icons8-play.png';
+        }
+        });
+///////////////////////////////////////////////////////        
+let stopButton = document.querySelector("#stopButton")
+stopButton.addEventListener('click', () => {
+    video.pause(); // Ставим видео на паузу
+    video.currentTime = 0; // Сбрасываем к началу
+    playButton.src = 'img/icons8-play.png';
+    });
+///////////////////////////////////////////////////////  
+let fullscreenButton = document.querySelector('#fullButton');
+fullscreenButton.addEventListener("click", () => {
+    if (video.requestFullscreen) {
+            video.requestFullscreen();
+        } else if (videoPlayer.webkitRequestFullscreen) { 
+            video.webkitRequestFullscreen();
+        } else if (videoPlayer.msRequestFullscreen) { 
+            video.msRequestFullscreen();
+        }
+});
+///////////////////////////////////////////////////////  
+let prevButton = document.querySelector("#rewaindBack")
+let nextButton = document.querySelector("#rewaindForward")
+let currentVideoIndex = 0;
 
-       
+const videoList = [
+{
+            src: "video/vsvideo.mp4",
+            poster: "img/poster.png"
+        },
+        {
+            src: "video/vsvideo.ogg",
+            poster: "img/poster.png"
+        },
+        {
+            src: "video/vsvideo.webm",
+            poster: "img/poster.png"
+        }
+    ];
+
+    function changeVideo(index) {
+        currentVideoIndex = index;
+        const currentVideo = videoList[currentVideoIndex];
+        video.src = currentVideo.src;
+        video.poster = currentVideo.poster; // Обновляем постер
+        video.play();
+    }
+
+    // Кнопка "Следующее видео"
+    nextButton.addEventListener('click', () => {
+        currentVideoIndex = (currentVideoIndex + 1) % videoList.length; // Переход к следующему
+        changeVideo(currentVideoIndex);
+    });
+
+    // Кнопка "Предыдущее видео"
+    prevButton.addEventListener('click', () => {
+        currentVideoIndex = (currentVideoIndex - 1 + videoList.length) % videoList.length; // Переход к предыдущему
+        changeVideo(currentVideoIndex);
+    });
+
+    // Автопереход на следующее видео при завершении текущего
+    video.addEventListener('ended', () => {
+        currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+        changeVideo(currentVideoIndex);
+    });
     </script>
 </body>
 </html>
