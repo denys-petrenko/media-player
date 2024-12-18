@@ -8,18 +8,88 @@
     .player {
         display: flex;
         flex-direction: column;
-        width: 600px;
-        height: 400px;
+        width: 800px;
+        height: 600px;
     }
     .controls {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        background-color: black;
     }
     .button {
         cursor: pointer;
+
     }
+    #soundButton {
+        /* background-image: url("img/volume.svg"); */
+        display: flex;
+    width: 25px;
+    height: 24px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    }
+
+
+    .slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 5px;
+  background: linear-gradient(to right, black 0%, #ccc 0%);
+  outline: none;
+  /* opacity: 0.7; */
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  border: 1px solid white;
+}
+
+.slider::-webkit-slider-thumb {
+  /* -webkit-appearance: none; */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  box-shadow: 0px 0px 0px 8px rgba(248, 247, 247, 0.474);
+  transition: 0.5s ease-in-out;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  /* background-color: #000000; */
+  /* background-color: red; */
+  cursor: pointer;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.sound {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#currentTime, #duration {
+    color: white;
+}
+
 </style>
+
 </head>
 <body>
     <div class="player">
@@ -29,28 +99,42 @@
             <source src="video/vsvideo.webm" type="video/webm"> -->
         </video>
         <div class="controls">
+            <div class="slider-container">
+                <span id="currentTime">0:00</span>
+                <input type="range" class="slider" id="timeSlider" min="0" max="100" value="0" step="0.1">
+                <span id="duration">0:00</span>
+            </div>
             <div>
-                <img class="button" id="playButton" src="img/icons8-play.png" alt="Play Button">
+                <img class="button" id="playButton" src="img/play.svg" alt="Play Button">
             </div>
             <div>
                 <img class="button" id="rewaindBack" src="img/icons8-prev.png" alt="Back Button">
             </div>
             <div>
-                <img class="button" id="rewaindForward" src="img/icons8-next.png" alt="Forward Button">
+                <img class="button" id="rewaindForward" src="img/next.png" alt="Forward Button">
             </div>
             <div>
                 <img class="button" id="stopButton" src="img/icons8-stop.png" alt="Stop Button">
             </div>
             <div>
-                <img class="button" id="fullButton" src="img/icons8-full.png">
+                <img class="button" id="fullButton" src="img/expand.svg">
             </div>
-            <button id="towards">Увеличить скорость воспроизведения</button>
-            <button id="backwards">Уменьшить скорость вопроизведения</button>
+            <div class="sound">
+                <img class="button"  id="soundButton" src="img/volume.svg">
+                <input type="range" class="slider" id="volume" min="0" max="100" step="1" value="100">
+            </div>
+            <div>
+                <button id="towards">Playback Speed up</button>
+                <button id="backwards">Playback Speed down</button>
+            </div>
+            
         </div>
     </div>
     <script>
+
         let video = document.querySelector("video");
-///////////////////////////////////////////////////////
+
+////////////////////Playback Rate///////////////////////
         let towards = document.querySelector("#towards")
         let backwards = document.querySelector("#backwards");
         towards.onclick = function () {
@@ -59,25 +143,33 @@
         backwards.onclick = function () {
             video.playbackRate -= 0.1;
         }
-///////////////////////////////////////////////////////
+
+
+
+///////////////////Play-Pause Button/////////////////////
         let playButton = document.getElementById('playButton');
         playButton.addEventListener('click', () => {
             if (video.paused) {
                 video.play();
-            playButton.src = 'img/icons8-pause.png';
+            playButton.src = 'img/pause.svg';
         } else {
             video.pause();
-            playButton.src = 'img/icons8-play.png';
+            playButton.src = 'img/play.svg';
         }
         });
-///////////////////////////////////////////////////////        
+
+
+///////////////////Stop Button/////////////////////////        
 let stopButton = document.querySelector("#stopButton")
 stopButton.addEventListener('click', () => {
-    video.pause(); // Ставим видео на паузу
-    video.currentTime = 0; // Сбрасываем к началу
-    playButton.src = 'img/icons8-play.png';
+    video.pause(); 
+    video.currentTime = 0; 
+    playButton.src = 'img/play.svg';
     });
-///////////////////////////////////////////////////////  
+
+
+
+//////////////////Full Button////////////////////////  
 let fullscreenButton = document.querySelector('#fullButton');
 fullscreenButton.addEventListener("click", () => {
     if (video.requestFullscreen) {
@@ -88,22 +180,29 @@ fullscreenButton.addEventListener("click", () => {
             video.msRequestFullscreen();
         }
 });
-///////////////////////////////////////////////////////  
+
+
+
+//////////////////Change Video////////////////////////  
 let prevButton = document.querySelector("#rewaindBack")
 let nextButton = document.querySelector("#rewaindForward")
 let currentVideoIndex = 0;
 
 const videoList = [
 {
-            src: "video/vsvideo.mp4",
+            src: "video/clouds.mp4",
             poster: "img/poster.png"
         },
         {
-            src: "video/vsvideo.ogg",
+            src: "video/iceland-canyon.mp4",
             poster: "img/poster.png"
         },
         {
-            src: "video/vsvideo.webm",
+            src: "video/mountains.mp4",
+            poster: "img/poster.png"
+        },
+        {
+            src: "video/sea.mp4",
             poster: "img/poster.png"
         }
     ];
@@ -112,27 +211,105 @@ const videoList = [
         currentVideoIndex = index;
         const currentVideo = videoList[currentVideoIndex];
         video.src = currentVideo.src;
-        video.poster = currentVideo.poster; // Обновляем постер
+        video.poster = currentVideo.poster;
         video.play();
     }
 
-    // Кнопка "Следующее видео"
+   
     nextButton.addEventListener('click', () => {
-        currentVideoIndex = (currentVideoIndex + 1) % videoList.length; // Переход к следующему
+        currentVideoIndex = (currentVideoIndex + 1) % videoList.length; 
         changeVideo(currentVideoIndex);
+        changeVideo(currentVideoIndex);
+        playButton.src = 'img/pause.svg';
+
     });
 
-    // Кнопка "Предыдущее видео"
+    
     prevButton.addEventListener('click', () => {
-        currentVideoIndex = (currentVideoIndex - 1 + videoList.length) % videoList.length; // Переход к предыдущему
+        currentVideoIndex = (currentVideoIndex - 1 + videoList.length) % videoList.length;
         changeVideo(currentVideoIndex);
+        changeVideo(currentVideoIndex);
+        playButton.src = 'img/pause.svg';
     });
 
-    // Автопереход на следующее видео при завершении текущего
+    
     video.addEventListener('ended', () => {
         currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
         changeVideo(currentVideoIndex);
     });
+
+
+    /////////////////Sound Control////////////////////
+    const volumeControl = document.querySelector("#volume");
+    let volumeButton = document.querySelector("#soundButton");
+
+
+    let lastVolume = 0.5;
+    video.volume = lastVolume;
+    volumeControl.value = lastVolume * 100;
+
+    window.addEventListener('load', () => updateSliderBackground(volumeControl));
+
+    volumeControl.addEventListener("input", function () {
+        video.volume = volumeControl.value / 100;
+        lastVolume = video.volume;
+        updateSliderBackground(volumeControl)
+    });
+
+    volumeButton.addEventListener("click", () => {
+    if (video.volume > 0) {
+        lastVolume = video.volume;
+        video.volume = 0;
+        volumeControl.value = 0;
+        volumeButton.src = 'img/silence.svg';
+        updateSliderBackground(volumeControl)
+    } else {
+        video.volume = lastVolume;
+        volumeControl.value = lastVolume * 100;
+        volumeButton.src = 'img/volume.svg';
+        updateSliderBackground(volumeControl)
+    }
+});
+
+
+    /////////////////Time Slider////////////////////
+    const timeSlider = document.querySelector("#timeSlider");
+    const currentTimeDisplay = document.querySelector("#currentTime");
+  const durationDisplay = document.querySelector("#duration");
+  
+   
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+  }
+
+
+  video.addEventListener("loadedmetadata", () => {
+    timeSlider.max = video.duration; 
+   durationDisplay.textContent = formatTime(video.duration); 
+  updateSliderBackground(timeSlider);
+  });
+
+  
+  video.addEventListener("timeupdate", () => {
+    timeSlider.value = video.currentTime; 
+   currentTimeDisplay.textContent = formatTime(video.currentTime);
+  updateSliderBackground(timeSlider);
+  });
+
+
+  timeSlider.addEventListener("input", () => {
+    video.currentTime = timeSlider.value; 
+    updateSliderBackground(timeSlider);
+  });
+   
+   function updateSliderBackground(slider) {
+    let value = (slider.value / slider.max) * 100; 
+    slider.style.background = `linear-gradient(to right, black ${value}%, #ccc ${value}%)`;
+  }
+
+
     </script>
 </body>
 </html>
