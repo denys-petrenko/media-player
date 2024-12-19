@@ -1,315 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video player</title>
-<style>
-    .player {
-        display: flex;
-        flex-direction: column;
-        width: 800px;
-        height: 600px;
-    }
-    .controls {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        background-color: black;
-    }
-    .button {
-        cursor: pointer;
+    <style>
+        .player {
+            display: flex;
+            flex-direction: column;
+            width: 800px;
+            height: 600px;
+        }
 
-    }
-    #soundButton {
-        /* background-image: url("img/volume.svg"); */
-        display: flex;
-    width: 25px;
-    height: 24px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
-    }
+        .controls {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            /* background-color: black; */
+            background-color: rgba(0, 0, 0, 0.6);
+            flex-direction: column;
+            padding: 10px 15px 20px 15px;
+            gap: 15px;
+        }
+
+        .button {
+            cursor: pointer;
+            width: 40px;
+
+        }
+
+        #soundButton {
+            /* background-image: url("img/volume.svg"); */
+            display: flex;
+            width: 25px;
+            height: 24px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+        }
 
 
-    .slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 4px;
-  border-radius: 5px;
-  background: linear-gradient(to right, black 0%, #ccc 0%);
-  outline: none;
-  /* opacity: 0.7; */
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-  border: 1px solid white;
-}
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 5px;
+            background: linear-gradient(to right, black 0%, #ccc 0%);
+            outline: none;
+            /* opacity: 0.7; */
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            border: 1px solid white;
+        }
 
-.slider::-webkit-slider-thumb {
-  /* -webkit-appearance: none; */
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: white;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
+        .slider::-webkit-slider-thumb {
+            /* -webkit-appearance: none; */
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
 
-.slider::-webkit-slider-thumb:hover {
-  box-shadow: 0px 0px 0px 8px rgba(248, 247, 247, 0.474);
-  transition: 0.5s ease-in-out;
-}
+        .slider::-webkit-slider-thumb:hover {
+            box-shadow: 0px 0px 0px 8px rgba(248, 247, 247, 0.474);
+            transition: 0.5s ease-in-out;
+        }
 
-.slider::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  /* background-color: #000000; */
-  /* background-color: red; */
-  cursor: pointer;
-}
+        .slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            /* background-color: #000000; */
+            /* background-color: red; */
+            cursor: pointer;
+        }
 
-.slider-container {
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px 10px 10px;
+            width: 100%;
+        }
+
+        .sound {
+            display: flex;
+            /* flex-direction: row; */
+            align-items: center;
+            width: 25%;
+            gap: 10px;
+        }
+
+        #currentTime,
+        #duration {
+            color: white;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        .playback {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 50%;
+        }
+
+        .settings {
+            display: flex;
+            width: 25%;
+            justify-content: end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 30px;
+        }
+        .settings-box {
+            display: none;
+            justify-content: center;
+            width: 100px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+        }
+        .settings-box.show {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
 }
-
-.sound {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#currentTime, #duration {
-    color: white;
-}
-
-</style>
+      .video {
+            display: flex;
+            flex-direction: column;
+    width: 100%;
+    position: relative;
+        }
+        #speedSlider {
+            writing-mode: bt-lr;
+  -webkit-appearance: slider-vertical;
+  /* height: 200px;  */
+  /* transform: rotate(270deg); */
+  margin: 20px;
+        }
+    </style>
 
 </head>
+
 <body>
     <div class="player">
-        <video poster="img/poster.png">
-            <source src="video/vsvideo.mp4" type="video/mp4">
-            <!-- <source src="video/vsvideo.ogg" type="video/ogg">
-            <source src="video/vsvideo.webm" type="video/webm"> -->
-        </video>
-        <div class="controls">
+        <section class="video">
+            <video poster="img/poster.png">
+                <source src="video/vsvideo.mp4" type="video/mp4">
+                <!-- <source src="video/vsvideo.ogg" type="video/ogg">
+                <source src="video/vsvideo.webm" type="video/webm"> -->
+                
+            </video>
+            <div class="settings-box">
+                <!-- <button id="towards">Playback Speed up</button>
+                <button id="backwards">Playback Speed down</button> -->
+                <input type="range" id="speedSlider">
+            </div>
+        </section>
+       
+        <section class="controls">
             <div class="slider-container">
-                <span id="currentTime">0:00</span>
+                <div class="time">
+                    <span id="currentTime">0:00</span><span id="duration">0:00</span>
+                </div>
+
                 <input type="range" class="slider" id="timeSlider" min="0" max="100" value="0" step="0.1">
-                <span id="duration">0:00</span>
+
             </div>
-            <div>
-                <img class="button" id="playButton" src="img/play.svg" alt="Play Button">
+            <div class="buttons-container">
+                <div class="sound">
+                    <img class="button" id="soundButton" src="img/volume.svg">
+                    <input type="range" class="slider" id="volume" min="0" max="100" step="1" value="100">
+                </div>
+                <div class="playback">
+                    <div>
+                        <img class="button" id="previous" src="img/prev.png" alt="Previous Button">
+                    </div>
+                    <div>
+                        <img class="button" id="rewaindBack" src="img/backward.svg" alt="Forward Button">
+                    </div>
+                    <div>
+                        <img class="button" id="playButton" src="img/play.svg" alt="Play Button">
+                    </div>
+                    <div>
+                        <img class="button" id="rewaindForward" src="img/forward.svg" alt="Forward Button">
+                        <!-- <span>+ 10</span> -->
+                    </div>
+                    <div>
+                        <img class="button" id="next" src="img/next.png" alt="Next Button">
+                    </div>
+                </div>
+                <div class="settings">
+                    <div>
+                        <img class="button" id="fullButton" src="img/expand.svg">
+                    </div>
+                    <div>
+                        <img class="button" id="settingsButton" src="img/settings.png">
+
+                    </div>
+                </div>
             </div>
-            <div>
-                <img class="button" id="rewaindBack" src="img/icons8-prev.png" alt="Back Button">
-            </div>
-            <div>
-                <img class="button" id="rewaindForward" src="img/next.png" alt="Forward Button">
-            </div>
-            <div>
-                <img class="button" id="stopButton" src="img/icons8-stop.png" alt="Stop Button">
-            </div>
-            <div>
-                <img class="button" id="fullButton" src="img/expand.svg">
-            </div>
-            <div class="sound">
-                <img class="button"  id="soundButton" src="img/volume.svg">
-                <input type="range" class="slider" id="volume" min="0" max="100" step="1" value="100">
-            </div>
-            <div>
-                <button id="towards">Playback Speed up</button>
-                <button id="backwards">Playback Speed down</button>
-            </div>
-            
-        </div>
+
+        </section>
     </div>
     <script>
 
         let video = document.querySelector("video");
 
-////////////////////Playback Rate///////////////////////
-        let towards = document.querySelector("#towards")
-        let backwards = document.querySelector("#backwards");
-        towards.onclick = function () {
-            video.playbackRate += 0.1;
-        }
-        backwards.onclick = function () {
-            video.playbackRate -= 0.1;
-        }
+
+        //////////////////Settings////////////////////
+        let settingsButton = document.querySelector("#settingsButton");
+        let settingsBox = document.querySelector(".settings-box");
+
+        settingsButton.addEventListener("click", () => {
+            settingsBox.classList.toggle("show");
+        })
 
 
 
-///////////////////Play-Pause Button/////////////////////
+        ////////////////////Rewind Video////////////////////////
+        const rewindButton = document.getElementById("rewaindBack");
+        const forwardButton = document.getElementById("rewaindForward");
+
+        
+        rewindButton.addEventListener('click', () => {
+            video.currentTime = Math.max(0, video.currentTime - 10);
+        });
+
+        
+        forwardButton.addEventListener('click', () => {
+            video.currentTime = Math.min(video.duration, video.currentTime + 10);
+        });
+        ////////////////////Playback Rate///////////////////////
+        // let towards = document.querySelector("#towards")
+        // let backwards = document.querySelector("#backwards");
+        // towards.onclick = function () {
+        //     video.playbackRate += 0.1;
+        // }
+        // backwards.onclick = function () {
+        //     video.playbackRate -= 0.1;
+        // }
+
+
+
+        ///////////////////Play-Pause Button/////////////////////
         let playButton = document.getElementById('playButton');
         playButton.addEventListener('click', () => {
             if (video.paused) {
                 video.play();
-            playButton.src = 'img/pause.svg';
-        } else {
-            video.pause();
-            playButton.src = 'img/play.svg';
-        }
+                playButton.src = 'img/pause.svg';
+            } else {
+                video.pause();
+                playButton.src = 'img/play.svg';
+            }
         });
 
 
-///////////////////Stop Button/////////////////////////        
-let stopButton = document.querySelector("#stopButton")
-stopButton.addEventListener('click', () => {
-    video.pause(); 
-    video.currentTime = 0; 
-    playButton.src = 'img/play.svg';
-    });
+
+        //////////////////Full Button////////////////////////  
+        let fullscreenButton = document.querySelector('#fullButton');
+        fullscreenButton.addEventListener("click", () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (videoPlayer.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (videoPlayer.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        });
 
 
 
-//////////////////Full Button////////////////////////  
-let fullscreenButton = document.querySelector('#fullButton');
-fullscreenButton.addEventListener("click", () => {
-    if (video.requestFullscreen) {
-            video.requestFullscreen();
-        } else if (videoPlayer.webkitRequestFullscreen) { 
-            video.webkitRequestFullscreen();
-        } else if (videoPlayer.msRequestFullscreen) { 
-            video.msRequestFullscreen();
+        //////////////////Change Video////////////////////////  
+        let prevButton = document.querySelector("#previous")
+        let nextButton = document.querySelector("#next")
+        let currentVideoIndex = 0;
+
+        const videoList = [
+            {
+                src: "video/clouds.mp4",
+                poster: "img/poster.png"
+            },
+            {
+                src: "video/iceland-canyon.mp4",
+                poster: "img/poster.png"
+            },
+            {
+                src: "video/mountains.mp4",
+                poster: "img/poster.png"
+            },
+            {
+                src: "video/sea.mp4",
+                poster: "img/poster.png"
+            }
+        ];
+
+        function changeVideo(index) {
+            currentVideoIndex = index;
+            const currentVideo = videoList[currentVideoIndex];
+            video.src = currentVideo.src;
+            video.poster = currentVideo.poster;
+            video.play();
         }
-});
 
 
+        nextButton.addEventListener('click', () => {
+            currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+            changeVideo(currentVideoIndex);
+            changeVideo(currentVideoIndex);
+            playButton.src = 'img/pause.svg';
 
-//////////////////Change Video////////////////////////  
-let prevButton = document.querySelector("#rewaindBack")
-let nextButton = document.querySelector("#rewaindForward")
-let currentVideoIndex = 0;
-
-const videoList = [
-{
-            src: "video/clouds.mp4",
-            poster: "img/poster.png"
-        },
-        {
-            src: "video/iceland-canyon.mp4",
-            poster: "img/poster.png"
-        },
-        {
-            src: "video/mountains.mp4",
-            poster: "img/poster.png"
-        },
-        {
-            src: "video/sea.mp4",
-            poster: "img/poster.png"
-        }
-    ];
-
-    function changeVideo(index) {
-        currentVideoIndex = index;
-        const currentVideo = videoList[currentVideoIndex];
-        video.src = currentVideo.src;
-        video.poster = currentVideo.poster;
-        video.play();
-    }
-
-   
-    nextButton.addEventListener('click', () => {
-        currentVideoIndex = (currentVideoIndex + 1) % videoList.length; 
-        changeVideo(currentVideoIndex);
-        changeVideo(currentVideoIndex);
-        playButton.src = 'img/pause.svg';
-
-    });
-
-    
-    prevButton.addEventListener('click', () => {
-        currentVideoIndex = (currentVideoIndex - 1 + videoList.length) % videoList.length;
-        changeVideo(currentVideoIndex);
-        changeVideo(currentVideoIndex);
-        playButton.src = 'img/pause.svg';
-    });
-
-    
-    video.addEventListener('ended', () => {
-        currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-        changeVideo(currentVideoIndex);
-    });
+        });
 
 
-    /////////////////Sound Control////////////////////
-    const volumeControl = document.querySelector("#volume");
-    let volumeButton = document.querySelector("#soundButton");
+        prevButton.addEventListener('click', () => {
+            currentVideoIndex = (currentVideoIndex - 1 + videoList.length) % videoList.length;
+            changeVideo(currentVideoIndex);
+            changeVideo(currentVideoIndex);
+            playButton.src = 'img/pause.svg';
+        });
 
 
-    let lastVolume = 0.5;
-    video.volume = lastVolume;
-    volumeControl.value = lastVolume * 100;
+        video.addEventListener('ended', () => {
+            currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+            changeVideo(currentVideoIndex);
+        });
 
-    window.addEventListener('load', () => updateSliderBackground(volumeControl));
 
-    volumeControl.addEventListener("input", function () {
-        video.volume = volumeControl.value / 100;
-        lastVolume = video.volume;
-        updateSliderBackground(volumeControl)
-    });
+        /////////////////Sound Control////////////////////
+        const volumeControl = document.querySelector("#volume");
+        let volumeButton = document.querySelector("#soundButton");
 
-    volumeButton.addEventListener("click", () => {
-    if (video.volume > 0) {
-        lastVolume = video.volume;
-        video.volume = 0;
-        volumeControl.value = 0;
-        volumeButton.src = 'img/silence.svg';
-        updateSliderBackground(volumeControl)
-    } else {
+
+        let lastVolume = 0.5;
         video.volume = lastVolume;
         volumeControl.value = lastVolume * 100;
-        volumeButton.src = 'img/volume.svg';
-        updateSliderBackground(volumeControl)
-    }
-});
+
+        window.addEventListener('load', () => updateSliderBackground(volumeControl));
+
+        volumeControl.addEventListener("input", function () {
+            video.volume = volumeControl.value / 100;
+            lastVolume = video.volume;
+            updateSliderBackground(volumeControl)
+        });
+
+        volumeButton.addEventListener("click", () => {
+            if (video.volume > 0) {
+                lastVolume = video.volume;
+                video.volume = 0;
+                volumeControl.value = 0;
+                volumeButton.src = 'img/silence.svg';
+                updateSliderBackground(volumeControl)
+            } else {
+                video.volume = lastVolume;
+                volumeControl.value = lastVolume * 100;
+                volumeButton.src = 'img/volume.svg';
+                updateSliderBackground(volumeControl)
+            }
+        });
 
 
-    /////////////////Time Slider////////////////////
-    const timeSlider = document.querySelector("#timeSlider");
-    const currentTimeDisplay = document.querySelector("#currentTime");
-  const durationDisplay = document.querySelector("#duration");
-  
-   
-  function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
-  }
+        /////////////////Time Slider////////////////////
+        const timeSlider = document.querySelector("#timeSlider");
+        const currentTimeDisplay = document.querySelector("#currentTime");
+        const durationDisplay = document.querySelector("#duration");
 
 
-  video.addEventListener("loadedmetadata", () => {
-    timeSlider.max = video.duration; 
-   durationDisplay.textContent = formatTime(video.duration); 
-  updateSliderBackground(timeSlider);
-  });
-
-  
-  video.addEventListener("timeupdate", () => {
-    timeSlider.value = video.currentTime; 
-   currentTimeDisplay.textContent = formatTime(video.currentTime);
-  updateSliderBackground(timeSlider);
-  });
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+        }
 
 
-  timeSlider.addEventListener("input", () => {
-    video.currentTime = timeSlider.value; 
-    updateSliderBackground(timeSlider);
-  });
-   
-   function updateSliderBackground(slider) {
-    let value = (slider.value / slider.max) * 100; 
-    slider.style.background = `linear-gradient(to right, black ${value}%, #ccc ${value}%)`;
-  }
+        video.addEventListener("loadedmetadata", () => {
+            timeSlider.max = video.duration;
+            durationDisplay.textContent = formatTime(video.duration);
+            updateSliderBackground(timeSlider);
+        });
+
+
+        video.addEventListener("timeupdate", () => {
+            timeSlider.value = video.currentTime;
+            currentTimeDisplay.textContent = formatTime(video.currentTime);
+            updateSliderBackground(timeSlider);
+        });
+
+
+        timeSlider.addEventListener("input", () => {
+            video.currentTime = timeSlider.value;
+            updateSliderBackground(timeSlider);
+        });
+
+        function updateSliderBackground(slider) {
+            let value = (slider.value / slider.max) * 100;
+            slider.style.background = `linear-gradient(to right, black ${value}%, #ccc ${value}%)`;
+        }
 
 
     </script>
 </body>
+
 </html>
