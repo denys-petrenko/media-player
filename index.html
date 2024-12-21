@@ -4,20 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video player</title>
+    <title>Video Player</title>
+    <link rel="icon" href="img/fav-icon.png">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse, orangered, transparent, orange) orange;
+        }
+
         .player {
             display: flex;
             flex-direction: column;
             width: 800px;
             height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 10px 10px 15px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .video {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 75%;
+            position: relative;
+        }
+
+        .video video {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
         }
 
         .controls {
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            /* background-color: black; */
+            box-sizing: border-box;
+            width: 100%;
+            height: 25%;
             background-color: rgba(0, 0, 0, 0.6);
             flex-direction: column;
             padding: 10px 15px 20px 15px;
@@ -27,11 +62,9 @@
         .button {
             cursor: pointer;
             width: 40px;
-
         }
 
         #soundButton {
-            /* background-image: url("img/volume.svg"); */
             display: flex;
             width: 25px;
             height: 24px;
@@ -49,14 +82,12 @@
             border-radius: 5px;
             background: linear-gradient(to right, black 0%, #ccc 0%);
             outline: none;
-            /* opacity: 0.7; */
             -webkit-transition: .2s;
             transition: opacity .2s;
             border: 1px solid white;
         }
 
         .slider::-webkit-slider-thumb {
-            /* -webkit-appearance: none; */
             appearance: none;
             width: 15px;
             height: 15px;
@@ -75,8 +106,6 @@
             width: 15px;
             height: 15px;
             border-radius: 50%;
-            /* background-color: #000000; */
-            /* background-color: red; */
             cursor: pointer;
         }
 
@@ -91,7 +120,6 @@
 
         .sound {
             display: flex;
-            /* flex-direction: row; */
             align-items: center;
             width: 25%;
             gap: 10px;
@@ -129,60 +157,70 @@
             width: 100%;
             height: 30px;
         }
+
         .settings-box {
             display: none;
             justify-content: center;
             width: 100px;
-    height: 200px;
-    background-color: rgba(0, 0, 0, 0.6);
-    position: absolute;
-    bottom: 0;
-    right: 0;
+            height: 200px;
+            background-color: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            bottom: 0;
+            right: 0;
         }
+
         .settings-box.show {
-    display: flex;
-}
-      .video {
             display: flex;
-            flex-direction: column;
-    width: 100%;
-    position: relative;
+            align-items: center;
+            color: white;
+            gap: 5px;
         }
+
         #speedSlider {
-            writing-mode: bt-lr;
-  -webkit-appearance: slider-vertical;
-  /* height: 200px;  */
-  /* transform: rotate(270deg); */
-  margin: 20px;
+            writing-mode: vertical-lr;
+            direction: rtl;
+            height: 80%;
+            cursor: pointer;
+        }
+
+        #settingsButton.bright-img {
+            transform: rotate(200deg);
+            position: relative;
+            transition: filter 0.3s ease, box-shadow 0.3s ease;
+            filter: brightness(1.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            background: #696262;
+            filter: brightness(1.8);
+        }
+
+        .star.bright {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
         }
     </style>
 
 </head>
 
 <body>
-    <div class="player">
+    <section class="player">
         <section class="video">
             <video poster="img/poster.png">
                 <source src="video/vsvideo.mp4" type="video/mp4">
-                <!-- <source src="video/vsvideo.ogg" type="video/ogg">
-                <source src="video/vsvideo.webm" type="video/webm"> -->
-                
             </video>
             <div class="settings-box">
-                <!-- <button id="towards">Playback Speed up</button>
-                <button id="backwards">Playback Speed down</button> -->
-                <input type="range" id="speedSlider">
+                <input type=range id="speedSlider" min="0.1" max="2" value="1" step="0.1">
+                <div class="slider-value"><span id="sliderValue">1</span>x</div>
             </div>
         </section>
-       
         <section class="controls">
             <div class="slider-container">
                 <div class="time">
                     <span id="currentTime">0:00</span><span id="duration">0:00</span>
                 </div>
-
                 <input type="range" class="slider" id="timeSlider" min="0" max="100" value="0" step="0.1">
-
             </div>
             <div class="buttons-container">
                 <div class="sound">
@@ -201,7 +239,6 @@
                     </div>
                     <div>
                         <img class="button" id="rewaindForward" src="img/forward.svg" alt="Forward Button">
-                        <!-- <span>+ 10</span> -->
                     </div>
                     <div>
                         <img class="button" id="next" src="img/next.png" alt="Next Button">
@@ -211,15 +248,13 @@
                     <div>
                         <img class="button" id="fullButton" src="img/expand.svg">
                     </div>
-                    <div>
+                    <div class="star">
                         <img class="button" id="settingsButton" src="img/settings.png">
-
                     </div>
                 </div>
             </div>
-
         </section>
-    </div>
+    </section>
     <script>
 
         let video = document.querySelector("video");
@@ -228,35 +263,37 @@
         //////////////////Settings////////////////////
         let settingsButton = document.querySelector("#settingsButton");
         let settingsBox = document.querySelector(".settings-box");
+        let star = document.querySelector(".star");
+        let speedSlider = document.querySelector("#speedSlider");
+        let sliderValue = document.getElementById('sliderValue');
 
         settingsButton.addEventListener("click", () => {
             settingsBox.classList.toggle("show");
-        })
+            star.classList.toggle("bright");
+            settingsButton.classList.toggle("bright-img");
+        });
 
+        speedSlider.addEventListener("input", () => {
+            let speed = Number(speedSlider.value);
+            sliderValue.textContent = speed.toFixed(1);
+            video.playbackRate = speed;
+            updateSliderBackground(speedSlider)
+        });
 
 
         ////////////////////Rewind Video////////////////////////
         const rewindButton = document.getElementById("rewaindBack");
         const forwardButton = document.getElementById("rewaindForward");
 
-        
+
         rewindButton.addEventListener('click', () => {
             video.currentTime = Math.max(0, video.currentTime - 10);
         });
 
-        
+
         forwardButton.addEventListener('click', () => {
             video.currentTime = Math.min(video.duration, video.currentTime + 10);
         });
-        ////////////////////Playback Rate///////////////////////
-        // let towards = document.querySelector("#towards")
-        // let backwards = document.querySelector("#backwards");
-        // towards.onclick = function () {
-        //     video.playbackRate += 0.1;
-        // }
-        // backwards.onclick = function () {
-        //     video.playbackRate -= 0.1;
-        // }
 
 
 
@@ -289,8 +326,8 @@
 
 
         //////////////////Change Video////////////////////////  
-        let prevButton = document.querySelector("#previous")
-        let nextButton = document.querySelector("#next")
+        let prevButton = document.querySelector("#previous");
+        let nextButton = document.querySelector("#next");
         let currentVideoIndex = 0;
 
         const videoList = [
@@ -317,7 +354,9 @@
             const currentVideo = videoList[currentVideoIndex];
             video.src = currentVideo.src;
             video.poster = currentVideo.poster;
-            video.play();
+            setTimeout(() => {
+                video.play();
+            }, 100);
         }
 
 
@@ -358,7 +397,7 @@
         volumeControl.addEventListener("input", function () {
             video.volume = volumeControl.value / 100;
             lastVolume = video.volume;
-            updateSliderBackground(volumeControl)
+            updateSliderBackground(volumeControl);
         });
 
         volumeButton.addEventListener("click", () => {
@@ -367,12 +406,12 @@
                 video.volume = 0;
                 volumeControl.value = 0;
                 volumeButton.src = 'img/silence.svg';
-                updateSliderBackground(volumeControl)
+                updateSliderBackground(volumeControl);
             } else {
                 video.volume = lastVolume;
                 volumeControl.value = lastVolume * 100;
                 volumeButton.src = 'img/volume.svg';
-                updateSliderBackground(volumeControl)
+                updateSliderBackground(volumeControl);
             }
         });
 
@@ -411,10 +450,8 @@
 
         function updateSliderBackground(slider) {
             let value = (slider.value / slider.max) * 100;
-            slider.style.background = `linear-gradient(to right, black ${value}%, #ccc ${value}%)`;
+            slider.style.background = `linear-gradient(to right, orange ${value}%, #ccc ${value}%)`;
         }
-
-
     </script>
 </body>
 
