@@ -1,0 +1,223 @@
+ * {
+     margin: 0;
+     padding: 0;
+ }
+
+ body {
+     width: 100%;
+     height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: orange;
+ }
+
+ .player {
+     display: flex;
+     flex-direction: column;
+     width: 800px;
+     height: 600px;
+     border-radius: 20px;
+     overflow: hidden;
+     box-shadow: 10px 10px 15px 5px rgba(0, 0, 0, 0.4);
+ }
+
+ .video {
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     height: 75%;
+     position: relative;
+ }
+
+ .video video {
+     display: flex;
+     height: 100%;
+     width: 100%;
+     object-fit: cover;
+ }
+
+ .controls {
+     display: flex;
+     justify-content: space-evenly;
+     align-items: center;
+     box-sizing: border-box;
+     width: 100%;
+     height: 25%;
+     background-color: rgba(0, 0, 0, 0.6);
+     flex-direction: column;
+     padding: 10px 15px 20px 15px;
+     gap: 15px;
+ }
+
+ .button {
+     cursor: pointer;
+     width: 40px;
+ }
+
+ #soundButton {
+     display: flex;
+     width: 25px;
+     height: 24px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     cursor: pointer;
+ }
+
+
+ .slider {
+     -webkit-appearance: none;
+     width: 100%;
+     height: 4px;
+     border-radius: 5px;
+     background: linear-gradient(to right, black 0%, #ccc 0%);
+     outline: none;
+     -webkit-transition: .2s;
+     transition: opacity .2s;
+     border: 1px solid white;
+ }
+
+ .slider::-webkit-slider-thumb {
+     appearance: none;
+     width: 15px;
+     height: 15px;
+     border-radius: 50%;
+     background-color: white;
+     cursor: pointer;
+     transition: 0.3s ease-in-out;
+ }
+
+ .slider::-webkit-slider-thumb:hover {
+     box-shadow: 0px 0px 0px 8px rgba(248, 247, 247, 0.474);
+     transition: 0.5s ease-in-out;
+ }
+
+ .slider::-moz-range-thumb {
+     width: 15px;
+     height: 15px;
+     border-radius: 50%;
+     cursor: pointer;
+ }
+
+ .slider-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     padding: 5px 10px 10px 10px;
+     width: 100%;
+ }
+
+ .sound {
+     display: flex;
+     align-items: center;
+     width: 25%;
+     gap: 10px;
+ }
+
+ #currentTime,
+ #duration {
+     color: white;
+ }
+
+ .buttons-container {
+     display: flex;
+     justify-content: space-around;
+     width: 100%;
+ }
+
+ .playback {
+     display: flex;
+     justify-content: space-around;
+     align-items: center;
+     width: 50%;
+ }
+
+ .settings {
+     display: flex;
+     width: 25%;
+     justify-content: end;
+     align-items: center;
+     gap: 15px;
+ }
+
+ .time {
+     display: flex;
+     justify-content: space-between;
+     width: 100%;
+     height: 30px;
+ }
+
+ .settings-box {
+     display: none;
+     justify-content: center;
+     align-items: center;
+     color: white;
+     gap: 5px;
+     width: 100px;
+     height: 200px;
+     background-color: rgba(0, 0, 0, 0.6);
+     position: absolute;
+     bottom: 0;
+     right: 0;
+ }
+
+ #speedSlider {
+     writing-mode: vertical-lr;
+     direction: rtl;
+     height: 80%;
+     cursor: pointer;
+ }
+
+ #settingsButton.bright-img {
+     animation: rotate 0.5s ease-out;
+     border-radius: 50%;
+     background: #ac9b9b;
+     transition: filter 0.3s ease, box-shadow 0.3s ease;
+     box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+     background: radial-gradient(ellipse, transparent, transparent, #c19696) #eee0c7;
+ }
+
+ @keyframes rotate {
+     0% {
+         transform: rotate(0deg);
+     }
+
+     100% {
+         transform: rotate(45deg);
+     }
+ }
+
+ @keyframes rotate-back {
+     0% {
+         transform: rotate(45deg);
+     }
+
+     100% {
+         transform: rotate(0deg);
+     }
+ }
+
+ #settingsButton.rotate {
+     animation: rotate 0.5s ease forwards;
+     border-radius: 50%;
+     background: #ac9b9b;
+     transition: filter 0.3s ease, box-shadow 0.3s ease;
+     box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+     background: radial-gradient(ellipse, transparent, transparent, #c19696) #eee0c7;
+ }
+
+ #settingsButton.rotate-back {
+     animation: rotate-back 0.5s ease forwards;
+ }
+
+ .icon-container {
+     display: flex;
+     justify-content: center;
+     border-radius: 24px;
+ }
+
+ .icon-container.bright {
+     box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+ }

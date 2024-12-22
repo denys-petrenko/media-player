@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "src": "video/clouds.mp4",
+        "poster": "img/poster.png"
+    },
+    {
+        "id": 2,
+        "src": "video/iceland-canyon.mp4",
+        "poster": "img/poster.png"
+    },
+    {
+        "id": 3,
+        "src": "video/mountains.mp4",
+        "poster": "img/poster.png"
+    },
+    {
+        "id": 4,
+        "src": "video/sea.mp4",
+        "poster": "img/poster.png"
+    }
+]
