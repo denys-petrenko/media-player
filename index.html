@@ -16,8 +16,12 @@
                 <source src="video/vsvideo.mp4" type="video/mp4">
             </video>
             <div class="settings-box">
-                <input type=range id="speedSlider" min="0.1" max="2" value="1" step="0.1">
-                <div class="slider-value"><span id="sliderValue">1</span>x</div>
+                <div class="speed-box">
+                    <div class="speed-input">
+                        <input type=range class="slider" id="speedSlider" min="0.1" max="2" value="1" step="0.1">
+                    </div>
+                    <div class="slider-value"><span id="sliderValue">1</span>x</div>
+                </div>
             </div>
         </section>
         <section class="controls">
@@ -60,6 +64,7 @@
             </div>
         </section>
     </section>
-   <script src="scripts/main.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
+
 </html>
