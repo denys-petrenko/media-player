@@ -5,7 +5,7 @@ let settingsButton = document.querySelector("#settingsButton");
 let settingsBox = document.querySelector(".settings-box");
 let settingsContainer = document.querySelector(".icon-container");
 let speedSlider = document.querySelector("#speedSlider");
-let sliderValue = document.getElementById('sliderValue');
+let sliderValue = document.querySelector("#sliderValue");
 let flag = false;
 
 settingsButton.addEventListener("click", () => {
@@ -50,7 +50,7 @@ forwardButton.addEventListener("click", () => {
 
 
 ///////////////////Play-Pause Button/////////////////////
-let playButton = document.getElementById('playButton');
+let playButton = document.querySelector("#playButton");
 playButton.addEventListener("click", () => {
     if (video.paused) {
         video.play();
@@ -63,7 +63,7 @@ playButton.addEventListener("click", () => {
 
 
 //////////////////Full Button////////////////////////  
-let fullscreenButton = document.querySelector('#fullButton');
+let fullscreenButton = document.querySelector("#fullButton");
 fullscreenButton.addEventListener("click", () => {
     if (video.requestFullscreen) {
         video.requestFullscreen();
@@ -81,7 +81,7 @@ let nextButton = document.querySelector("#next");
 let currentVideoIndex = 0;
 
 async function fetchData() {
-    let response = await fetch('data.json');
+    let response = await fetch("data.json");
     let data = await response.json();
 
     function changeVideo(index) {
@@ -98,7 +98,7 @@ async function fetchData() {
         currentVideoIndex = (currentVideoIndex + 1) % data.length;
         changeVideo(currentVideoIndex);
         changeVideo(currentVideoIndex);
-        playButton.src = 'img/pause.svg';
+        playButton.src = "img/pause.svg";
 
     });
 
@@ -106,7 +106,7 @@ async function fetchData() {
         currentVideoIndex = (currentVideoIndex - 1 + data.length) % data.length;
         changeVideo(currentVideoIndex);
         changeVideo(currentVideoIndex);
-        playButton.src = 'img/pause.svg';
+        playButton.src = "img/pause.svg";
     });
 
     video.addEventListener("ended", () => {
